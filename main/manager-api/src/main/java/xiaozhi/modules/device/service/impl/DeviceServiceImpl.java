@@ -223,10 +223,10 @@ public class DeviceServiceImpl extends BaseServiceImpl<DeviceDao, DeviceEntity> 
     @Override
     public List<DeviceEntity> getUserDevices(Long userId, String agentId) {
         QueryWrapper<DeviceEntity> wrapper = new QueryWrapper<>();
-        wrapper.eq("user_id", userId);
         wrapper.eq("agent_id", agentId);
         return baseDao.selectList(wrapper);
     }
+
 
     @Override
     public void unbindDevice(Long userId, String deviceId) {
@@ -241,7 +241,6 @@ public class DeviceServiceImpl extends BaseServiceImpl<DeviceDao, DeviceEntity> 
         }
 
         UpdateWrapper<DeviceEntity> wrapper = new UpdateWrapper<>();
-        wrapper.eq("user_id", userId);
         wrapper.eq("id", deviceId);
         baseDao.delete(wrapper);
     }

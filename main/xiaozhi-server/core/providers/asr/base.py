@@ -10,7 +10,6 @@ import traceback
 import threading
 import opuslib_next
 import concurrent.futures
-import gc
 from abc import ABC, abstractmethod
 from config.logger import setup_logging
 from typing import Optional, Tuple, List
@@ -102,7 +101,7 @@ class ASRProviderBase(ABC):
                             self.speech_to_text(asr_audio_task, conn.session_id, conn.audio_format)
                         )
                         end_time = time.monotonic()
-                        logger.bind(tag=TAG).debug(f"ASR耗时: {end_time - start_time:.3f}s")
+                        logger.bind(tag=TAG).info(f"ASR耗时: {end_time - start_time:.3f}s")
                         return result
                     finally:
                         loop.close()
@@ -159,7 +158,7 @@ class ASRProviderBase(ABC):
             
             # 性能监控
             total_time = time.monotonic() - total_start_time
-            logger.bind(tag=TAG).debug(f"总处理耗时: {total_time:.3f}s")
+            logger.bind(tag=TAG).info(f"总处理耗时: {total_time:.3f}s")
             
             # 检查文本长度
             text_len, _ = remove_punctuation_and_length(raw_text)
@@ -242,7 +241,6 @@ class ASRProviderBase(ABC):
     @staticmethod
     def decode_opus(opus_data: List[bytes]) -> List[bytes]:
         """将Opus音频数据解码为PCM数据"""
-        decoder = None
         try:
             decoder = opuslib_next.Decoder(16000, 1)
             pcm_data = []
@@ -267,9 +265,3 @@ class ASRProviderBase(ABC):
         except Exception as e:
             logger.bind(tag=TAG).error(f"音频解码过程发生错误: {e}")
             return []
-        finally:
-            if decoder is not None:
-                try:
-                    del decoder
-                except Exception as e:
-                    logger.bind(tag=TAG).debug(f"释放decoder资源时出错: {e}")

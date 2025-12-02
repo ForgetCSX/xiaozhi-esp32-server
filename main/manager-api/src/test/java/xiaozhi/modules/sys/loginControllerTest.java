@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import lombok.extern.slf4j.Slf4j;
+import xiaozhi.modules.empower.service.LoginUserService;
 import xiaozhi.modules.security.controller.LoginController;
 import xiaozhi.modules.security.dto.LoginDTO;
 import xiaozhi.modules.security.dto.SmsVerificationDTO;
@@ -18,6 +19,9 @@ class loginControllerTest {
 
     @Autowired
     LoginController loginController;
+
+    @Autowired
+    LoginUserService loginUserService;
 
     @Test
     public void testRegister() {
@@ -52,6 +56,20 @@ class loginControllerTest {
             System.out.println(e.getMessage());
         }
 
+    }
+    /***
+     * 增加注册用户
+     */
+    /
+    @Test
+    public void testInitUserAgent() {
+        try {
+            String  userName ="13124883704";
+            String  deviceCode = "00:1A:2B:9C:9D:7E";
+            loginUserService.acceptCustomer(userName, deviceCode);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }

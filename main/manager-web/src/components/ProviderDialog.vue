@@ -88,7 +88,6 @@
                     <el-option :label="$t('providerDialog.booleanType')" value="boolean"></el-option>
                     <el-option :label="$t('providerDialog.dictType')" value="dict"></el-option>
                     <el-option :label="$t('providerDialog.arrayType')" value="array"></el-option>
-                    <el-option :label="$t('providerDialog.ragType')" value="RAG"></el-option>
                   </el-select>
                 </template>
                 <template v-else>
@@ -166,8 +165,7 @@ export default {
         'number': this.$t('providerDialog.numberType'),
         'boolean': this.$t('providerDialog.booleanType'),
         'dict': this.$t('providerDialog.dictType'),
-        'array': this.$t('providerDialog.arrayType'),
-        'RAG': this.$t('providerDialog.ragType')
+        'array': this.$t('providerDialog.arrayType')
       };
       return typeMap[type];
     },

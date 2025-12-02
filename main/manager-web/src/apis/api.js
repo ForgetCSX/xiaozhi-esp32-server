@@ -9,7 +9,6 @@ import timbre from "./module/timbre.js"
 import user from './module/user.js'
 import voiceClone from './module/voiceClone.js'
 import voiceResource from './module/voiceResource.js'
-import knowledgeBase from './module/knowledgeBase.js'
 
 
 
@@ -40,6 +39,5 @@ export default {
     ota,
     dict,
     voiceResource,
-    voiceClone,
-    knowledgeBase
-  }
+    voiceClone
+}

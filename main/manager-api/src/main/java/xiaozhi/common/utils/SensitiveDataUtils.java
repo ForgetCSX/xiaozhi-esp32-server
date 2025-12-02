@@ -1,14 +1,13 @@
 package xiaozhi.common.utils;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
+import cn.hutool.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
-import cn.hutool.json.JSONObject;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
 
 /**
  * 敏感数据处理工具类
@@ -31,7 +30,7 @@ public class SensitiveDataUtils {
      * 隐藏字符串中间部分
      */
     public static String maskMiddle(String value) {
-        if (StringUtils.isBlank(value) || value.length() == 1) {
+        if (StringUtils.isBlank(value)) {
             return value;
         }
 

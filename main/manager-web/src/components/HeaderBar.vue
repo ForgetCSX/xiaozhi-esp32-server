@@ -9,50 +9,82 @@
 
       <!-- 中间导航菜单 -->
       <div class="header-center">
-        <div class="equipment-management" :class="{
-          'active-tab':
-            $route.path === '/home' ||
-            $route.path === '/role-config' ||
-            $route.path === '/device-management',
-        }" @click="goHome">
-          <img loading="lazy" alt="" src="@/assets/header/robot.png" :style="{
-            filter:
+        <div
+          class="equipment-management"
+          :class="{
+            'active-tab':
               $route.path === '/home' ||
+              $route.path === '/role-config' ||
+              $route.path === '/device-management',
+          }"
+          @click="goHome"
+        >
+          <img
+            loading="lazy"
+            alt=""
+            src="@/assets/header/robot.png"
+            :style="{
+              filter:
+                $route.path === '/home' ||
                 $route.path === '/role-config' ||
                 $route.path === '/device-management'
-                ? 'brightness(0) invert(1)'
-                : 'None',
-          }" />
+                  ? 'brightness(0) invert(1)'
+                  : 'None',
+            }"
+          />
           <span class="nav-text">{{ $t("header.smartManagement") }}</span>
         </div>
         <!-- 普通用户显示音色克隆 -->
-        <div v-if="!isSuperAdmin" class="equipment-management"
-          :class="{ 'active-tab': $route.path === '/voice-clone-management' }" @click="goVoiceCloneManagement">
-          <img loading="lazy" alt="" src="@/assets/header/voice.png" :style="{
-            filter:
-              $route.path === '/voice-clone-management'
-                ? 'brightness(0) invert(1)'
-                : 'None',
-          }" />
+        <div
+          v-if="!isSuperAdmin"
+          class="equipment-management"
+          :class="{ 'active-tab': $route.path === '/voice-clone-management' }"
+          @click="goVoiceCloneManagement"
+        >
+          <img
+            loading="lazy"
+            alt=""
+            src="@/assets/header/voice.png"
+            :style="{
+              filter:
+                $route.path === '/voice-clone-management'
+                  ? 'brightness(0) invert(1)'
+                  : 'None',
+            }"
+          />
           <span class="nav-text">{{ $t("header.voiceCloneManagement") }}</span>
         </div>
 
         <!-- 超级管理员显示音色克隆下拉菜单 -->
-        <el-dropdown v-if="isSuperAdmin" trigger="click" class="equipment-management more-dropdown" :class="{
-          'active-tab':
-            $route.path === '/voice-clone-management' ||
-            $route.path === '/voice-resource-management',
-        }" @visible-change="handleVoiceCloneDropdownVisibleChange">
+        <el-dropdown
+          v-if="isSuperAdmin"
+          trigger="click"
+          class="equipment-management more-dropdown"
+          :class="{
+            'active-tab':
+              $route.path === '/voice-clone-management' ||
+              $route.path === '/voice-resource-management',
+          }"
+          @visible-change="handleVoiceCloneDropdownVisibleChange"
+        >
           <span class="el-dropdown-link">
-            <img loading="lazy" alt="" src="@/assets/header/voice.png" :style="{
-              filter:
-                $route.path === '/voice-clone-management' ||
+            <img
+              loading="lazy"
+              alt=""
+              src="@/assets/header/voice.png"
+              :style="{
+                filter:
+                  $route.path === '/voice-clone-management' ||
                   $route.path === '/voice-resource-management'
-                  ? 'brightness(0) invert(1)'
-                  : 'None',
-            }" />
+                    ? 'brightness(0) invert(1)'
+                    : 'None',
+              }"
+            />
             <span class="nav-text">{{ $t("header.voiceCloneManagement") }}</span>
-            <i class="el-icon-arrow-down el-icon--right" :class="{ 'rotate-down': voiceCloneDropdownVisible }"></i>
+            <i
+              class="el-icon-arrow-down el-icon--right"
+              :class="{ 'rotate-down': voiceCloneDropdownVisible }"
+            ></i>
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item @click.native="goVoiceCloneManagement">
@@ -64,58 +96,84 @@
           </el-dropdown-menu>
         </el-dropdown>
 
-        <div v-if="isSuperAdmin" class="equipment-management" :class="{ 'active-tab': $route.path === '/model-config' }"
-          @click="goModelConfig">
-          <img loading="lazy" alt="" src="@/assets/header/model_config.png" :style="{
-            filter:
-              $route.path === '/model-config' ? 'brightness(0) invert(1)' : 'None',
-          }" />
+        <div
+          v-if="isSuperAdmin"
+          class="equipment-management"
+          :class="{ 'active-tab': $route.path === '/model-config' }"
+          @click="goModelConfig"
+        >
+          <img
+            loading="lazy"
+            alt=""
+            src="@/assets/header/model_config.png"
+            :style="{
+              filter:
+                $route.path === '/model-config' ? 'brightness(0) invert(1)' : 'None',
+            }"
+          />
           <span class="nav-text">{{ $t("header.modelConfig") }}</span>
         </div>
-        <div class="equipment-management"
-          :class="{ 'active-tab': $route.path === '/knowledge-base-management' || $route.path === '/knowledge-file-upload' }"
-          @click="goKnowledgeBaseManagement">
-          <img loading="lazy" alt="" src="@/assets/header/knowledge_base.png" :style="{
-            filter:
-              $route.path === '/knowledge-base-management' || $route.path === '/knowledge-file-upload' ? 'brightness(0) invert(1)' : 'None',
-          }" />
-          <span class="nav-text">{{ $t("header.knowledgeBase") }}</span>
-        </div>
-        <el-dropdown v-if="isSuperAdmin" trigger="click" class="equipment-management more-dropdown" :class="{
-          'active-tab':
-            $route.path === '/dict-management' ||
-            $route.path === '/params-management' ||
-            $route.path === '/provider-management' ||
-            $route.path === '/server-side-management' ||
-            $route.path === '/agent-template-management' ||
-            $route.path === '/ota-management' ||
-            $route.path === '/user-management',
-        }" @visible-change="handleParamDropdownVisibleChange">
-          <span class="el-dropdown-link">
-            <img loading="lazy" alt="" src="@/assets/header/param_management.png" :style="{
+        <div
+          v-if="isSuperAdmin"
+          class="equipment-management"
+          :class="{ 'active-tab': $route.path === '/user-management' }"
+          @click="goUserManagement"
+        >
+          <img
+            loading="lazy"
+            alt=""
+            src="@/assets/header/user_management.png"
+            :style="{
               filter:
-                $route.path === '/dict-management' ||
+                $route.path === '/user-management' ? 'brightness(0) invert(1)' : 'None',
+            }"
+          />
+          <span class="nav-text">{{ $t("header.userManagement") }}</span>
+        </div>
+        <el-dropdown
+          v-if="isSuperAdmin"
+          trigger="click"
+          class="equipment-management more-dropdown"
+          :class="{
+            'active-tab':
+              $route.path === '/dict-management' ||
+              $route.path === '/params-management' ||
+              $route.path === '/provider-management' ||
+              $route.path === '/server-side-management' ||
+              $route.path === '/agent-template-management' ||
+              $route.path === '/ota-management',
+          }"
+          @visible-change="handleParamDropdownVisibleChange"
+        >
+          <span class="el-dropdown-link">
+            <img
+              loading="lazy"
+              alt=""
+              src="@/assets/header/param_management.png"
+              :style="{
+                filter:
+                  $route.path === '/dict-management' ||
                   $route.path === '/params-management' ||
                   $route.path === '/provider-management' ||
                   $route.path === '/server-side-management' ||
                   $route.path === '/agent-template-management' ||
-                  $route.path === '/ota-management' ||
-                  $route.path === '/user-management'
-                  ? 'brightness(0) invert(1)'
-                  : 'None',
-            }" />
+                  $route.path === '/ota-management'
+                    ? 'brightness(0) invert(1)'
+                    : 'None',
+              }"
+            />
             <span class="nav-text">{{ $t("header.paramDictionary") }}</span>
-            <i class="el-icon-arrow-down el-icon--right" :class="{ 'rotate-down': paramDropdownVisible }"></i>
+            <i
+              class="el-icon-arrow-down el-icon--right"
+              :class="{ 'rotate-down': paramDropdownVisible }"
+            ></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="goParamManagement">
-              {{ $t("header.paramManagement") }}
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="goUserManagement">
-              {{ $t("header.userManagement") }}
-            </el-dropdown-item>
             <el-dropdown-item @click.native="goOtaManagement">
               {{ $t("header.otaManagement") }}
+            </el-dropdown-item>
+            <el-dropdown-item @click.native="goParamManagement">
+              {{ $t("header.paramManagement") }}
             </el-dropdown-item>
             <el-dropdown-item @click.native="goDictManagement">
               {{ $t("header.dictManagement") }}
@@ -135,40 +193,85 @@
 
       <!-- 右侧元素 -->
       <div class="header-right">
-        <div class="search-container" v-if="$route.path === '/home' && !(isSuperAdmin && isSmallScreen)">
+        <div
+          class="search-container"
+          v-if="$route.path === '/home' && !(isSuperAdmin && isSmallScreen)"
+        >
           <div class="search-wrapper">
-            <el-input v-model="search" :placeholder="$t('header.searchPlaceholder')" class="custom-search-input"
-              @keyup.enter.native="handleSearch" @focus="showSearchHistory" @blur="hideSearchHistory" clearable
-              ref="searchInput">
-              <i slot="suffix" class="el-icon-search search-icon" @click="handleSearch"></i>
+            <el-input
+              v-model="search"
+              :placeholder="$t('header.searchPlaceholder')"
+              class="custom-search-input"
+              @keyup.enter.native="handleSearch"
+              @focus="showSearchHistory"
+              @blur="hideSearchHistory"
+              clearable
+              ref="searchInput"
+            >
+              <i
+                slot="suffix"
+                class="el-icon-search search-icon"
+                @click="handleSearch"
+              ></i>
             </el-input>
             <!-- 搜索历史下拉框 -->
-            <div v-if="showHistory && searchHistory.length > 0" class="search-history-dropdown">
+            <div
+              v-if="showHistory && searchHistory.length > 0"
+              class="search-history-dropdown"
+            >
               <div class="search-history-header">
                 <span>{{ $t("header.searchHistory") }}</span>
-                <el-button type="text" size="small" class="clear-history-btn" @click="clearSearchHistory">
+                <el-button
+                  type="text"
+                  size="small"
+                  class="clear-history-btn"
+                  @click="clearSearchHistory"
+                >
                   {{ $t("header.clearHistory") }}
                 </el-button>
               </div>
               <div class="search-history-list">
-                <div v-for="(item, index) in searchHistory" :key="index" class="search-history-item"
-                  @click.stop="selectSearchHistory(item)">
+                <div
+                  v-for="(item, index) in searchHistory"
+                  :key="index"
+                  class="search-history-item"
+                  @click.stop="selectSearchHistory(item)"
+                >
                   <span class="history-text">{{ item }}</span>
-                  <i class="el-icon-close clear-item-icon" @click.stop="removeSearchHistory(index)"></i>
+                  <i
+                    class="el-icon-close clear-item-icon"
+                    @click.stop="removeSearchHistory(index)"
+                  ></i>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <img loading="lazy" alt="" src="@/assets/home/avatar.png" class="avatar-img" @click="handleAvatarClick" />
+        <img
+          loading="lazy"
+          alt=""
+          src="@/assets/home/avatar.png"
+          class="avatar-img"
+          @click="handleAvatarClick"
+        />
         <span class="el-dropdown-link" @click="handleAvatarClick">
           {{ userInfo.username || "加载中..." }}
-          <i class="el-icon-arrow-down el-icon--right" :class="{ 'rotate-down': userMenuVisible }"></i>
+          <i
+            class="el-icon-arrow-down el-icon--right"
+            :class="{ 'rotate-down': userMenuVisible }"
+          ></i>
         </span>
-        <el-cascader :options="userMenuOptions" trigger="click" :props="cascaderProps"
-          style="width: 0px; overflow: hidden" :show-all-levels="false" @change="handleCascaderChange"
-          @visible-change="handleUserMenuVisibleChange" ref="userCascader">
+        <el-cascader
+          :options="userMenuOptions"
+          trigger="click"
+          :props="cascaderProps"
+          style="width: 0px; overflow: hidden"
+          :show-all-levels="false"
+          @change="handleCascaderChange"
+          @visible-change="handleUserMenuVisibleChange"
+          ref="userCascader"
+        >
           <template slot-scope="{ data }">
             <span>{{ data.label }}</span>
           </template>
@@ -238,10 +341,6 @@ export default {
           return this.$t("language.zhTW");
         case "en":
           return this.$t("language.en");
-        case "de":
-          return this.$t("language.de");
-        case "vi":
-          return this.$t("language.vi");
         default:
           return this.$t("language.zhCN");
       }
@@ -264,14 +363,6 @@ export default {
             {
               label: this.$t("language.en"),
               value: "en",
-            },
-            {
-              label: this.$t("language.de"),
-              value: "de",
-            },
-            {
-              label: this.$t("language.vi"),
-              value: "vi",
             },
           ],
         },
@@ -307,9 +398,6 @@ export default {
     },
     goModelConfig() {
       this.$router.push("/model-config");
-    },
-    goKnowledgeBaseManagement() {
-      this.$router.push("/knowledge-base-management");
     },
     goVoiceCloneManagement() {
       this.$router.push("/voice-clone-management");
@@ -775,7 +863,7 @@ export default {
   color: #ff4949;
 }
 
-.custom-search-input>>>.el-input__inner {
+.custom-search-input >>> .el-input__inner {
   height: 18px;
   border-radius: 9px;
   background-color: #fff;
@@ -845,7 +933,6 @@ export default {
   color: #606266;
   white-space: nowrap;
 }
-
 /* 添加倒三角旋转样式 */
 .rotate-down {
   transform: rotate(180deg);

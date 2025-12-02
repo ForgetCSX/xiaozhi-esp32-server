@@ -1,4 +1,4 @@
-"""设备端MCP客户端支持模块"""
+"""修改备端MCP客户端支持模块"""
 
 import json
 import asyncio
@@ -13,7 +13,7 @@ logger = setup_logging()
 
 
 class MCPClient:
-    """设备端MCP客户端，用于管理MCP状态和工具"""
+    """修改设备端MCP客户端，用于管理MCP状态和工具"""
 
     def __init__(self):
         self.tools = {}  # sanitized_name -> tool_data
@@ -106,14 +106,14 @@ async def send_mcp_message(conn, payload: dict):
 
     try:
         await conn.websocket.send(message)
-        logger.bind(tag=TAG).debug(f"成功发送MCP消息: {message}")
+        logger.bind(tag=TAG).info(f"成功发送MCP消息: {message}")
     except Exception as e:
         logger.bind(tag=TAG).error(f"发送MCP消息失败: {e}")
 
 
 async def handle_mcp_message(conn, mcp_client: MCPClient, payload: dict):
     """处理MCP消息,包括初始化、工具列表和工具调用响应等"""
-    logger.bind(tag=TAG).debug(f"处理MCP消息: {str(payload)[:100]}")
+    logger.bind(tag=TAG).info(f"处理MCP消息: {str(payload)[:100]}")
 
     if not isinstance(payload, dict):
         logger.bind(tag=TAG).error("MCP消息缺少payload字段或格式错误")
@@ -138,7 +138,7 @@ async def handle_mcp_message(conn, mcp_client: MCPClient, payload: dict):
             if isinstance(server_info, dict):
                 name = server_info.get("name")
                 version = server_info.get("version")
-                logger.bind(tag=TAG).debug(
+                logger.bind(tag=TAG).info(
                     f"客户端MCP服务器信息: name={name}, version={version}"
                 )
             return
@@ -185,8 +185,8 @@ async def handle_mcp_message(conn, mcp_client: MCPClient, payload: dict):
                         description = tool_data["description"]
                         # 遍历所有工具名称进行替换
                         for (
-                            sanitized_name,
-                            original_name,
+                                sanitized_name,
+                                original_name,
                         ) in mcp_client.name_mapping.items():
                             description = description.replace(
                                 original_name, sanitized_name
@@ -195,11 +195,11 @@ async def handle_mcp_message(conn, mcp_client: MCPClient, payload: dict):
 
                 next_cursor = result.get("nextCursor", "")
                 if next_cursor:
-                    logger.bind(tag=TAG).debug(f"有更多工具，nextCursor: {next_cursor}")
+                    logger.bind(tag=TAG).info(f"有更多工具，nextCursor: {next_cursor}")
                     await send_mcp_tools_list_continue_request(conn, next_cursor)
                 else:
                     await mcp_client.set_ready(True)
-                    logger.bind(tag=TAG).debug("所有工具已获取，MCP客户端准备就绪")
+                    logger.bind(tag=TAG).info("所有工具已获取，MCP客户端准备就绪")
 
                     # 刷新工具缓存，确保MCP工具被包含在函数列表中
                     if hasattr(conn, "func_handler") and conn.func_handler:
@@ -255,7 +255,7 @@ async def send_mcp_initialize_message(conn):
             },
         },
     }
-    logger.bind(tag=TAG).debug("发送MCP初始化消息")
+    logger.bind(tag=TAG).info("发送MCP初始化消息")
     await send_mcp_message(conn, payload)
 
 
@@ -283,7 +283,7 @@ async def send_mcp_tools_list_continue_request(conn, cursor: str):
 
 
 async def call_mcp_tool(
-    conn, mcp_client: MCPClient, tool_name: str, args: str = "{}", timeout: int = 30
+        conn, mcp_client: MCPClient, tool_name: str, args: str = "{}", timeout: int = 30
 ):
     """
     调用指定的工具，并等待响应
@@ -347,7 +347,22 @@ async def call_mcp_tool(
         if not isinstance(e, ValueError):
             raise ValueError(f"参数处理失败: {str(e)}")
         raise e
-
+    # yuyaobing 增加MCP 客户端工具 device-id 参数处理 时间@date 2025-10-24
+    # 添加device_id到参数中
+    device_id_value = None
+    # 首先尝试从conn.headers获取device-id（前端传递的格式）
+    if hasattr(conn, 'headers') and conn.headers and 'device-id' in conn.headers:
+        device_id_value = conn.headers.get('device-id')
+        logger.bind(tag=TAG).info(f"从连接头中获取到device-id: {device_id_value}")
+    # 然后尝试从conn对象获取device_id属性
+    elif hasattr(conn, 'device_id') and conn.device_id:
+        device_id_value = conn.device_id
+        logger.bind(tag=TAG).info(f"从连接对象获取到device_id: {device_id_value}")
+    # 如果找到device_id_value，则将其添加到参数中
+    if device_id_value:
+        arguments['device_id'] = device_id_value
+        logger.bind(tag=TAG).info(f"已将设备ID {device_id_value} 作为device_id添加到MCP工具调用参数")
+    # yuyaobing 增加MCP 客户端工具 device-id 参数处理 时间@date 2025-10-24
     actual_name = mcp_client.name_mapping.get(tool_name, tool_name)
     payload = {
         "jsonrpc": "2.0",

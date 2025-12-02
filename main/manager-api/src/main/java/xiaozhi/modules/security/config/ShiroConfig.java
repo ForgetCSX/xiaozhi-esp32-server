@@ -72,6 +72,7 @@ public class ShiroConfig {
          * role：拥有某个角色权限才能访问
          */
         Map<String, String> filterMap = new LinkedHashMap<>();
+        filterMap.put("/admin/accept/**", "anon");
         filterMap.put("/ota/**", "anon");
         filterMap.put("/otaMag/download/**", "anon");
         filterMap.put("/webjars/**", "anon");

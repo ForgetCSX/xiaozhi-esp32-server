@@ -3,19 +3,15 @@ import { useLangStore } from '@/store/lang'
 import type { Language } from '@/store/lang'
 
 // 导入各个语言的翻译文件
-import zh_CN from './zh_CN'
+import zhCN from './zh_CN'
 import en from './en'
-import zh_TW from './zh_TW'
-import de from './de'
-import vi from './vi'
+import zhTW from './zh_TW'
 
 // 语言包映射
 const messages = {
-  zh_CN: zh_CN,
+  zh_CN: zhCN,
   en,
-  zh_TW: zh_TW,
-  de,
-  vi,
+  zh_TW: zhTW,
 }
 
 // 当前使用的语言
@@ -65,12 +61,10 @@ export function getCurrentLanguage(): Language {
 }
 
 // 获取支持的语言列表
-export function getSupportedLanguages(): { code: Language, name: string }[] {
+export function getSupportedLanguages(): {code: Language, name: string}[] {
   return [
     { code: 'zh_CN', name: '简体中文' },
     { code: 'en', name: 'English' },
     { code: 'zh_TW', name: '繁體中文' },
-    { code: 'de', name: 'Deutsch' },
-    { code: 'vi', name: 'Tiếng Việt' },
   ]
 }

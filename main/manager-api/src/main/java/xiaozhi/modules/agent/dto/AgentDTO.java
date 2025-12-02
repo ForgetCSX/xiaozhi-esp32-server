@@ -30,8 +30,14 @@ public class AgentDTO {
     @Schema(description = "视觉模型名称", example = "vllm_model_01")
     private String vllmModelName;
 
+    @Schema(description = "语音合成模型标识", example = "tts_model_02", required = false)
+    private String ttsModelId;
+
     @Schema(description = "记忆模型ID", example = "mem_model_01")
     private String memModelId;
+
+    @Schema(description = "VLLM模型标识", example = "vllm_model_02", required = false)
+    private String vllmModelId;
 
     @Schema(description = "角色设定参数", example = "你是一个专业的客服助手，负责回答用户问题并提供帮助")
     private String systemPrompt;
@@ -42,6 +48,18 @@ public class AgentDTO {
 
     @Schema(description = "最后连接时间", example = "2024-03-20 10:00:00")
     private Date lastConnectedAt;
+
+    @Schema(description = "聊天记录配置（0不记录 1仅记录文本 2记录文本和语音）", example = "3", nullable = true)
+    private Integer chatHistoryConf;
+
+    @Schema(description = "音色标识", example = "voice_02", nullable = true)
+    private String ttsVoiceId;
+
+    @Schema(description = "意图模型标识", example = "intent_model_02", nullable = true)
+    private String intentModelId;
+
+    @Schema(description = "大语言模型标识", example = "llm_model_02", nullable = true)
+    private String llmModelId;
 
     @Schema(description = "设备数量", example = "10")
     private Integer deviceCount;

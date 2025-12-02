@@ -151,11 +151,6 @@ public interface Constant {
      */
     String VOICE_CLONE_HUOSHAN_DOUBLE_STREAM = "huoshan_double_stream";
 
-    /**
-     * RAG配置类型
-     */
-    String RAG_CONFIG_TYPE = "RAG";
-
     enum SysBaseParam {
         /**
          * ICP备案号
@@ -299,7 +294,7 @@ public interface Constant {
     /**
      * 版本号
      */
-    public static final String VERSION = "0.8.9";
+    public static final String VERSION = "0.8.5";
 
     /**
      * 无效固件URL
